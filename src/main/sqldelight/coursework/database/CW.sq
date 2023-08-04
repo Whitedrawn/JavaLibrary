@@ -1,0 +1,45 @@
+CREATE TABLE IF NOT EXISTS BOOK (
+                                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                        TITLE TEXT NOT NULL,
+                                        PUBLISHER_NAME TEXT NOT NULL,
+                                        YEAR_OF_PUBLICATION INTEGER NOT NULL,
+                                        SUBJECT TEXT NOT NULL,
+                                        AUTHOR_ID INTEGER,
+                                        FOREIGN KEY (AUTHOR_ID) REFERENCES AUTHOR(id)
+
+
+);
+
+
+allBooks:
+SELECT *
+FROM BOOK;
+
+CREATE TABLE IF NOT EXISTS AUTHOR (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+FIRST_NAME TEXT NOT NULL,
+LAST_NAME TEXT NOT NULL
+
+);
+
+allAuthors:
+SELECT *
+FROM AUTHOR;
+
+insertBook:
+INSERT INTO BOOK ( TITLE, PUBLISHER_NAME, YEAR_OF_PUBLICATION, SUBJECT, AUTHOR_ID) VALUES ( ?, ?, ?, ?,?);
+
+insertAuthor:
+INSERT INTO AUTHOR (FIRST_NAME, LAST_NAME) VALUES (?, ?);
+
+book_by_author:
+SELECT
+    BOOK.TITLE,
+    BOOK.PUBLISHER_NAME,
+    BOOK.YEAR_OF_PUBLICATION,
+    BOOK.SUBJECT,
+    BOOK.AUTHOR_ID
+FROM BOOK
+INNER JOIN AUTHOR
+ON BOOK.AUTHOR_ID = AUTHOR.id
+WHERE BOOK.AUTHOR_ID = ? ;

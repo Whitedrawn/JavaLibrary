@@ -1,0 +1,103 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://www.jetbrains.com/intellij-repository/releases" }
+        maven { url "https://jetbrains.bintray.com/intellij-third-party-dependencies" }
+    }
+    dependencies {
+        classpath 'com.squareup.sqldelight:gradle-plugin:1.5.3'
+    }
+
+}
+
+
+plugins {
+    id 'java'
+
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
+
+    // creating an executable JVM application. Does not work with IntelliJ Fomrs.
+    id 'application'
+
+    id 'scala'
+}
+
+group 'coursework'
+version '1.0-SNAPSHOT'
+
+apply plugin: "application"
+application {
+    mainClass = 'coursework.gui.App'
+}
+
+apply plugin: 'com.squareup.sqldelight'
+
+sqldelight {
+    Database {
+        packageName = "coursework.database"
+        sourceFolders = ["sqldelight", "resources"]
+    }
+}
+
+
+apply plugin: "org.jetbrains.kotlin.jvm"
+// From kotlin plugin
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "15"
+    }
+}
+
+compileScala.dependsOn compileKotlin
+//compileKotlin.dependsOn compileScala
+//
+//sourceSets {
+//    main {
+//        scala {
+//            srcDirs = ['src/main/scala', 'src/main/java']
+//        }
+//        java {
+//            srcDirs = []
+//        }
+//    }
+//}
+
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "15"
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    // General
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'junit:junit:4.12'
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    // sqldlelight and related drivers.
+    implementation 'com.squareup.sqldelight:jdbc-driver:1.5.4'
+    implementation 'com.yahoo.sql4d:Sql4Ddriver:4.1.0'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'org.slf4j:slf4j-nop:2.0.4' // nop/api to enable logs.
+    implementation 'com.squareup.sqldelight:sqlite-driver:1.5.4'
+
+    implementation 'org.scala-lang:scala-library:2.11.12'
+    testImplementation 'org.scalatest:scalatest_2.11:3.0.0'
+    testImplementation 'junit:junit:4.13'
+
+}
+
+test {
+    useJUnitPlatform()
+}

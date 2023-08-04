@@ -1,0 +1,29 @@
+fun merge(
+        leftSorted: ArrayList<LECTURER>,
+        rightSorted: ArrayList<LECTURER>,
+        res: ArrayList<LECTURER>,
+    ) {
+
+        var (l, r, t) = Triple(0, 0, 0)
+        while ((l < leftSorted.size) || (r < rightSorted.size)) {
+            assert(t < res.size)
+            tick += 1
+            if (l == leftSorted.size) {
+                res[t] = rightSorted[r]
+                r += 1
+            } else if (r == rightSorted.size) {
+                res[t] = leftSorted[l]
+                l += 1
+            } else {
+                if (leftSorted[l].AGE < rightSorted[r].AGE) {
+                    res[t] = leftSorted[l]
+                    l += 1
+                } else {
+                    res[t] = rightSorted[r]
+                    r += 1
+                }
+            }
+            t += 1
+        }
+        assert((l == leftSorted.size) && (r == rightSorted.size))  // not B
+    }
